@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Albums Facebook</string>
+
+    <string name="facebook_app_id">448748815540168</string>
+    <string name="fb_login_protocol_scheme">fb448748815540168</string>
+
+</resources>
