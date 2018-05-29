@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.greybo.testfacebook.R
@@ -78,29 +77,22 @@ class PhotosActivity : AppCompatActivity(), PhotoMvp.PhotoView, OnItemClickListe
     }
 
     override fun onLongClick(isBlur: Boolean) {
-        if (isBlur){
-            blurView.visibility= View.VISIBLE
-        }else{
-            blurView.visibility= View.INVISIBLE
-        }
-
+        blurView.setBlurEnabled(isBlur)
     }
 
     private fun blur() {
-        val radius = 10f
+        val radius = 0.01f
 
         val decorView = window.decorView
-        //ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
         val rootView = decorView.findViewById(android.R.id.content) as ViewGroup
-        //set background, if your root layout doesn't have one
         val windowBackground = decorView.background
 
         blurView.setupWith(rootView)
                 .windowBackground(windowBackground)
                 .blurAlgorithm(RenderScriptBlur(this))
-    //                .blurAlgorithm(SupportRenderScriptBlur(this))
                 .blurRadius(radius)
                 .setHasFixedTransformationMatrix(true)
+        blurView.setBlurEnabled(false)
     }
 
     override fun onDestroy() {

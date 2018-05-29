@@ -6,6 +6,16 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+
+    signingConfigs {
+        release {
+            storeFile file("../key.jks")
+            storePassword "password"
+            keyAlias "albumfacebook"
+            keyPassword "password"
+        }
+    }
+
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.greybo.testfacebook"

@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
+import com.facebook.AccessToken
+import com.facebook.login.LoginManager
 import com.greybo.testfacebook.Album
 import com.greybo.testfacebook.R
 import com.greybo.testfacebook.album.adapter.AlbumsRecyclerAdapter
@@ -16,10 +18,7 @@ import com.greybo.testfacebook.album.presenter.AlbumsMvp
 import com.greybo.testfacebook.album.presenter.AlbumsPresenter
 import com.greybo.testfacebook.photo.PhotosActivity
 import com.greybo.testfacebook.utils.OnItemClickListener
-import android.R.menu
-import android.view.MenuInflater
-
-
+import java.util.*
 
 
 class AlbumActivity : AppCompatActivity(), AlbumsMvp.AlbumsView, OnItemClickListener {
@@ -47,11 +46,17 @@ class AlbumActivity : AppCompatActivity(), AlbumsMvp.AlbumsView, OnItemClickList
                 mSwipeRefreshLayout.isRefreshing = false
             }, 1000)
         }
-        supportActionBar?.title="Album"
+        supportActionBar?.title = "Album"
         mAlbumsRecycler = findViewById(R.id.albums_recycler_view)
         mPresenter = AlbumsPresenter.INSTANCE
         mPresenter.attach(this)
         mPresenter.getAllAlbums()
+        val declinedPermission = AccessToken.getCurrentAccessToken().getDeclinedPermissions()
+        if (declinedPermission.size > 0 && declinedPermission.contains("user_photos")) {
+            LoginManager.getInstance().logInWithReadPermissions(
+                    this,
+                    Arrays.asList("user_photos"));
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
